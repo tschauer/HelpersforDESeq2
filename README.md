@@ -1,5 +1,14 @@
 ## Helper functions for generating and exploring results by DESeq2
 
+## Installation
+
+```
+library(devtools)
+install_github("tschauer/HelpersforDESeq2")
+```
+
+## Documentation
+
 #### Setup DESeq2
 
 #### Explore Counts
