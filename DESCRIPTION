@@ -1,16 +1,19 @@
 Package: HelpersforDESeq2
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9000
+Title: This is a collection of helper functions for DESeq2
+Version: 0.1
 Authors@R: 
-    person(given = "First",
-           family = "Last",
+    person(given = "Tamas",
+           family = "Schauer",
            role = c("aut", "cre"),
            email = "first.last@example.com",
            comment = c(ORCID = "YOUR-ORCID-ID"))
-Description: What the package does (one paragraph).
+Description: This is a collection of helper functions for DESeq2. 
+        Functions for setting up, run, explore and plot differential analysis.
 License: `use_mit_license()`, `use_gpl3_license()` or friends to
     pick a license
 Encoding: UTF-8
-LazyData: true
+LazyData: false
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
+Suggests: knitr, rmarkdown
+VignetteBuilder: knitr
