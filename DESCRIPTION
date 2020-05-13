@@ -17,3 +17,7 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.0
 Suggests: knitr, rmarkdown
 VignetteBuilder: knitr
+Imports: 
+        topGO (>= 2.36.0),
+        GO.db (>= 3.8.2),
+        org.Dm.eg.db (>= 3.8.2)
