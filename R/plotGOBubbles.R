@@ -15,13 +15,12 @@ plotGObBubbles <- function(gt,
 
         plot(y = 1:nrow(gt), ylab = "", yaxt="n",
              x = gt$`Sign/Exp`, xlab = "Sign/Exp",
-             main = main_title,
              cex = log(gt$Significant), pch = 19, lwd=0,
              col = rgb(0,0,0.5, alpha = (-log10(as.numeric(gt$Fisher.classic)))/(max(-log10(as.numeric(gt$Fisher.classic))))))
 
         axis(side = 2, at = 1:nrow(gt), labels = gt$Term, las=2, cex.axis=1)
 
-
+        title(main = main_title, adj = 1)
 
         par(fig = c(0.67,1.00,0.15,0.85), mar=c(2,2,2,2), new=TRUE)
 

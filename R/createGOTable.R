@@ -40,7 +40,8 @@ createGOTable <- function(all_genes,
 
         df <- merge(bp, data.frame(gene_names), by.x="GO.ID", by.y = "row.names")
 
-
+        rownames(df) <- df$GO.ID
+        df <- df[,-1]
         df$Fisher.classic <- gsub("< 1e-30","1e-30",df$Fisher.classic)
         df$Fisher.classic <- as.numeric(df$Fisher.classic)
         df <- df[order(df$Fisher.classic),]

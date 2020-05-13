@@ -9,6 +9,16 @@ vignette: >
   \usepackage[utf8]{inputenc}
 ---
 
+<style>
+pre {
+  overflow-x: auto;
+}
+pre code {
+  word-wrap: normal;
+  white-space: pre;
+}
+</style>
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -185,16 +195,17 @@ for(tx_type in c("H/ACA", "C/D")){
 
 ```
 
+
 ## Gene Ontology
 
-```{r message=FALSE, warning=FALSE,results=T, fig.align='center', fig.height=7, fig.width=7, dpi=200, out.width='75%'}
+```{r message=FALSE, warning=FALSE,results=T, fig.align='center', fig.height=10, fig.width=10, dpi=200, out.width='75%'}
 library(HelpersforDESeq2)
 library(topGO)
 library(org.Dm.eg.db)
 
 res_name = "res.HighMLEpATP-Input"
 
-all_genes <- factor(as.integer(get(res_name)$padj < 0.01 & get(res_name)$log2FoldChange > 0))
+all_genes <- factor(as.integer(get(res_name)$padj < 0.01 & get(res_name)$log2FoldChange > 1.25))
 names(all_genes) <- get(res_name)$symbol
 
 head(all_genes,10)
@@ -202,20 +213,18 @@ head(all_genes,10)
 gt <- createGOTable(all_genes = all_genes,
                     shown_terms = 20,
                     min_signficant = 5,
-                    select_ontology = "BP",
+                    select_ontology = "CC",
                     select_organism = "org.Dm.eg.db",
                     select_ID = "SYMBOL")
 
 
-gt[,1:7]
+gt[1:5,]
 
 
 plotGObBubbles(gt = gt, 
                main_title = gsub("res.","", res_name))
 
 ```
-
-
 
 
 
