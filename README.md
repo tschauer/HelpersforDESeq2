@@ -1,13 +1,13 @@
 ## Helper functions for generating and exploring results by DESeq2
 
-## Installation
+### Installation
 
 ```
 library(devtools)
 install_github("tschauer/HelpersforDESeq2")
 ```
 
-## Documentation
+### Documentation
 
 [**Setup DESeq2**]
 
