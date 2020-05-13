@@ -7,6 +7,7 @@
 getResults(
   dds,
   contrast,
+  result_name = NULL,
   lfc_cutoff = 0,
   shrink = FALSE,
   annotation = "gtf",

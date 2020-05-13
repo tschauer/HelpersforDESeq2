@@ -19,7 +19,8 @@ plotLog2FC <- function(res1,
                        selection_color = rgb(0.7,0,0.9,1),
                        selection_point_size = 0.5,
                        selection_legend = NULL,
-                       selection_text_label = FALSE){
+                       selection_text_label = FALSE,
+                       selection_text_size = 1.1){
 
 
         res_merged <- merge(res1, res2, by = "row.names")
@@ -51,7 +52,7 @@ plotLog2FC <- function(res1,
                              y = res_merged$log2FoldChange.y[res_merged[selection_id_type][,1] %in% selection_ids],
                              labels = res_merged[selection_id_type][,1][res_merged[selection_id_type][,1] %in% selection_ids],
                              adj = c(0,-0.5),
-                             col = selection_color, cex = 1.1)
+                             col = selection_color, cex = selection_text_size)
                 }
         }
 

@@ -21,6 +21,7 @@ pre code {
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
 ```
 
 
@@ -50,7 +51,7 @@ SampleTable <- read.table(file.path(data_dir, "SampleTable.txt"),
 
 SampleTable <- SampleTable[order(SampleTable$ID),]
 
-SampleTable
+kable(SampleTable, row.names = F)
 ```
 
 ```{r message=FALSE, warning=FALSE,results=TRUE}
@@ -66,7 +67,7 @@ if(identical(count_names, SampleTable$ID)){
 
 save(read.counts, file = paste0(data_dir, "read.counts.rda"))
 
-read.counts[1:10,1:6]
+kable(read.counts[1:10,1:6])
 ```
 
 
@@ -76,7 +77,7 @@ read.counts[1:10,1:6]
 library(DESeq2)
 ```
 
-```{r message=T, warning=FALSE,results=TRUE}
+```{r message=F, warning=FALSE,results=TRUE}
 read.counts.genes <- read.counts[-1:-4,]
 
 if(identical(colnames(read.counts), SampleTable$ID)){
@@ -86,20 +87,22 @@ if(identical(colnames(read.counts), SampleTable$ID)){
                         SampleIdName = "ID", 
                         ConditionName = "Condition", 
                         BatchName = "Batch",
-                        n_samples_for_filtering = ncol(read.counts)*0.75,
+                        n_samples_for_filtering = ncol(read.counts.genes)*0.75,
                         min_number_of_reads = 1)
         }
+
+save(dds, file = paste0(data_dir, "dds.rda"))
 
 dds
 ```
 
 ## Get Results
 
-```{r message=T, warning=FALSE,results=TRUE}
-contrast_list <- list(c("Sample", "HighMLEpATP", "Input"),
-                      c("Sample", "LowMLEpATP",  "Input"),
-                      c("Sample", "HighMLEpATP", "HighMLEmATP"),
-                      c("Sample", "LowMLEpATP", "LowMLEmATP"))
+```{r message=F, warning=FALSE,results=TRUE}
+contrast_list <- list(c("HighMLEpATP", "Input"),
+                      c("LowMLEpATP",  "Input"),
+                      c("HighMLEpATP", "HighMLEmATP"),
+                      c("LowMLEpATP", "LowMLEmATP"))
 
 for(contrast_name in contrast_list){
         
@@ -112,15 +115,97 @@ for(contrast_name in contrast_list){
                           anno_id = "gene_id")
         
         
-        res_file_name <- paste0("res.",contrast_name[2],"-",contrast_name[3],".txt")
+        res_name <- paste0("res.", contrast_name[1],"-",contrast_name[2])
+        assign(res_name, res)
         
-        write.table(res, file = paste0(data_dir, res_file_name), 
+        write.table(res, file = paste0(data_dir, res_name, ".txt"), 
                     quote = F, sep = "\t", row.names = T, col.names = NA) 
         
 }
 
 
 head(res)
+```
+
+```{r message=FALSE, warning=FALSE,results=F, fig.align='center', fig.height=7, fig.width=7, dpi=200, out.width='75%'}
+par(mfrow=c(1,1), mar = c(4,4,2,2), oma = c(2,2,2,2), mgp = c(2,1,0))
+
+plottingMA(res = res,
+           main_title = gsub("res.","",res_name),
+           selection_ids = c("roX1","roX2"),
+           selection_id_type = "gene_symbol",
+           selection_point_size = 1,
+           selection_text_label = TRUE,
+           selection_shadow = FALSE,
+           xlims = c(0, 6),
+           ylims = c(-10,10),
+           x_axis_by = 2,
+           padj_cutoff = 0.01,
+           show_legend = TRUE)
+
+
+```
+
+
+## Interaction Terms
+
+```{r message=F, warning=FALSE,results=TRUE}
+SampleTable2 <- SampleTable[grep("ATP",SampleTable$Condition),]
+
+SampleTable2$ATP <- factor(as.integer(grepl("mATP", SampleTable2$Condition)))
+SampleTable2$MLE <- factor(as.integer(grepl("High", SampleTable2$Condition)))
+
+kable(SampleTable2, row.names = F)
+
+read.counts.genes.2 <- read.counts.genes[,colnames(read.counts.genes) %in% SampleTable2$ID]
+
+if(identical(colnames(read.counts.genes.2), SampleTable2$ID)){
+        
+        ddsI <- setupDDSwithInteraction(CountTableName = "read.counts.genes.2",
+                                        SampleTableName = "SampleTable2",
+                                        SampleIdName = "ID",
+                                        FactorAName = "ATP",
+                                        FactorBName = "MLE",
+                                        BatchName = "Batch",
+                                        n_samples_for_filtering = ncol(read.counts.genes.2)*0.75,
+                                        min_number_of_reads = 1)
+}
+
+ddsI
+
+resultsNames(ddsI)
+
+resI <- getResults(dds = ddsI,
+                  result_name = "FactorA1.FactorB1",
+                  lfc_cutoff = 0,
+                  annotation = "gtf",
+                  anno_symbol = "gene_symbol",
+                  anno_id = "gene_id")
+head(resI)
+```
+
+
+
+```{r message=FALSE, warning=FALSE,results=F, fig.align='center', fig.height=7, fig.width=7, dpi=200, out.width='75%'}
+par(mfrow=c(1,1), mar = c(5,5,1,1), oma = c(3,3,3,3), mgp = c(3,1,0))
+
+res1_name = "res.HighMLEpATP-HighMLEmATP"
+res2_name = "res.LowMLEpATP-LowMLEmATP"
+
+plotLog2FC(res1 = get(res1_name),
+           res2 = get(res2_name),
+           main_title = "",
+           x_label = paste("log2FC \n", gsub("res.","",res1_name)),
+           y_label = paste("log2FC \n", gsub("res.","",res2_name)),
+           lims = c(-10,10),
+           point_size = 0.33,
+           selection_ids = resI$gene_symbol[resI$padj < 0.1 & abs(resI$log2FoldChange) > 2],
+           selection_id_type = "gene_symbol",
+           selection_color = rgb(0.9,0.6,0.2,1),
+           selection_point_size = 1,
+           selection_legend = NULL,
+           selection_text_label = TRUE,
+           selection_text_size = 0.8) 
 ```
 
 

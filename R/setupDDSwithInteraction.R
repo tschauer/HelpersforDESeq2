@@ -1,17 +1,18 @@
-#' setupDDS
+#' setupDDSwithInteraction
 #'
-#' setup dds object
+#' setup dds object with interaction term
 #' @export
 
 
 
-setupDDS <- function(SampleTableName,
-                     CountTableName,
-                     SampleIdName,
-                     ConditionName,
-                     BatchName = NULL,
-                     n_samples_for_filtering = 3,
-                     min_number_of_reads = 1){
+setupDDSwithInteraction <- function(SampleTableName,
+                                    CountTableName,
+                                    SampleIdName,
+                                    FactorAName,
+                                    FactorBName,
+                                    BatchName = NULL,
+                                    n_samples_for_filtering = 3,
+                                    min_number_of_reads = 1){
 
         SampleTable <- get(SampleTableName)
 
@@ -28,13 +29,14 @@ setupDDS <- function(SampleTableName,
 
         ########################################################
 
-        my_colData <- DataFrame(Sample = factor(SampleTable[,ConditionName]))
+        my_colData <- DataFrame(FactorA = factor(SampleTable[,FactorAName]),
+                                FactorB = factor(SampleTable[,FactorBName]))
         rownames(my_colData) <- SampleTable[,SampleIdName]
 
         if(is.null(BatchName)){
-                my_design = formula("~Sample")
+                my_design = formula("~FactorA*FactorB")
         } else {
-                my_design = formula("~Batch+Sample")
+                my_design = formula("~Batch+FactorA*FactorB")
                 my_colData$Batch <- factor(SampleTable[,BatchName])
         }
 

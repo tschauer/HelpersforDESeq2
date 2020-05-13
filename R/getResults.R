@@ -9,6 +9,7 @@
 
 getResults <- function(dds,
                        contrast,
+                       result_name = NULL,
                        lfc_cutoff = 0,
                        shrink = FALSE,
                        annotation = "gtf",
@@ -16,15 +17,27 @@ getResults <- function(dds,
                        anno_symbol = "gene_symbol")
         {
 
+        if(is.null(result_name)){
 
-        res <- results(dds,
-                       contrast = contrast,
-                       lfcThreshold = lfc_cutoff,
-                       independentFiltering = FALSE)
+                res <- results(dds,
+                               contrast = c("Sample", contrast),
+                               lfcThreshold = lfc_cutoff,
+                               independentFiltering = FALSE)
 
-        if(shrink){
-                res <- lfcShrink(dds, contrast = contrast, type="normal", res = res)
+                if(shrink){
+                        res <- lfcShrink(dds, contrast = contrast, type="normal", res = res)
+                }
+
+        } else {
+
+                res <- results(dds,
+                               name = result_name,
+                               lfcThreshold = lfc_cutoff,
+                               independentFiltering = FALSE)
+
         }
+
+
 
         anno <- get(annotation)
 
