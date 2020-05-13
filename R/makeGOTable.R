@@ -1,17 +1,17 @@
-#' createGOTable
+#' makeGOTable
 #'
-#' creates a Gene Ontology enrichment table on DESeq2 results using topGO package
+#' make a Gene Ontology enrichment table on DESeq2 results using topGO package
 #' @export
 
 
 
 
-createGOTable <- function(all_genes,
-                          shown_terms = 20,
-                          min_signficant = 5,
-                          select_ontology = "BP",
-                          select_organism = "org.Mm.eg.db",
-                          select_ID = "SYMBOL"){
+makeGOTable <- function(all_genes,
+                        shown_terms = 20,
+                        min_signficant = 5,
+                        select_ontology = "BP",
+                        select_organism = "org.Mm.eg.db",
+                        select_ID = "SYMBOL"){
 
 
         tgd <- new( "topGOdata",

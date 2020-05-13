@@ -1,0 +1,130 @@
+---
+title: "Setup DESeq2"
+author: "Tamas Schauer"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+<style>
+pre {
+  overflow-x: auto;
+}
+pre code {
+  word-wrap: normal;
+  white-space: pre;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Load Gene Annotation
+
+```{r message=FALSE, warning=FALSE,results=TRUE}
+library(HelpersforDESeq2)
+
+data_dir <- system.file("extdata/", package = "HelpersforDESeq2")
+
+library(rtracklayer)
+# Annotation rda file was generated from the gtf annotation
+# gtf <- import("dmel-all-r6.17.gtf")
+# save(gtf, file = "dmel-all-r6.17.rda")
+
+load(file.path(data_dir, "dmel-all-r6.17.rda"))
+
+gtf[1:5,1:8]
+```
+
+
+## Make Count Table
+
+```{r message=FALSE, warning=FALSE,results=TRUE}
+SampleTable <- read.table(file.path(data_dir, "SampleTable.txt"), 
+                           header = T, sep = "\t", stringsAsFactors = FALSE)
+
+SampleTable <- SampleTable[order(SampleTable$ID),]
+
+SampleTable
+```
+
+```{r message=FALSE, warning=FALSE,results=TRUE}
+count_files <- file.path(data_dir, list.files(path = data_dir, pattern = "ReadsPerGene"))
+count_names <- gsub(".*\\/|_[G,A,T,C].*","", count_files)
+
+if(identical(count_names, SampleTable$ID)){
+        
+        read.counts <-  makeCountTable(count_names = count_names, 
+                               count_files = count_files,
+                               stranded = TRUE)
+}
+
+save(read.counts, file = paste0(data_dir, "read.counts.rda"))
+
+read.counts[1:10,1:6]
+```
+
+
+##  Setup DESeq2
+
+```{r message=F, warning=FALSE,results=TRUE}
+library(DESeq2)
+```
+
+```{r message=T, warning=FALSE,results=TRUE}
+read.counts.genes <- read.counts[-1:-4,]
+
+if(identical(colnames(read.counts), SampleTable$ID)){
+        
+        dds <- setupDDS(CountTableName = "read.counts.genes", 
+                        SampleTableName = "SampleTable",
+                        SampleIdName = "ID", 
+                        ConditionName = "Condition", 
+                        BatchName = "Batch",
+                        n_samples_for_filtering = ncol(read.counts)*0.75,
+                        min_number_of_reads = 1)
+        }
+
+dds
+```
+
+## Get Results
+
+```{r message=T, warning=FALSE,results=TRUE}
+contrast_list <- list(c("Sample", "HighMLEpATP", "Input"),
+                      c("Sample", "LowMLEpATP",  "Input"),
+                      c("Sample", "HighMLEpATP", "HighMLEmATP"),
+                      c("Sample", "LowMLEpATP", "LowMLEmATP"))
+
+for(contrast_name in contrast_list){
+        
+        res <- getResults(dds = dds,
+                          contrast = contrast_name,
+                          lfc_cutoff = 0,
+                          shrink = FALSE,
+                          annotation = "gtf",
+                          anno_symbol = "gene_symbol",
+                          anno_id = "gene_id")
+        
+        
+        res_file_name <- paste0("res.",contrast_name[2],"-",contrast_name[3],".txt")
+        
+        write.table(res, file = paste0(data_dir, res_file_name), 
+                    quote = F, sep = "\t", row.names = T, col.names = NA) 
+        
+}
+
+
+head(res)
+```
+
+
+```{r}
+sessionInfo()
+```
+

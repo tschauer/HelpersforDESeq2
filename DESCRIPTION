@@ -20,4 +20,5 @@ VignetteBuilder: knitr
 Imports: 
         topGO (>= 2.36.0),
         GO.db (>= 3.8.2),
-        org.Dm.eg.db (>= 3.8.2)
+        org.Dm.eg.db (>= 3.8.2),
+        DESeq2 (>= 1.24.0)
