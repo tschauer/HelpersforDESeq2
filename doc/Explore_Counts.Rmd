@@ -53,8 +53,8 @@ my_conditions
 
 ## Read Stats
 
-```{r message=FALSE, warning=FALSE,results=F, fig.align='center', fig.height=7, fig.width=7, dpi=200, out.width='75%'}
-par(mfrow=c(2,2), mar = c(4,4,2,2), oma = c(1,1,1,1), mgp = c(2,1,0))
+```{r message=FALSE, warning=FALSE,results=F, fig.align='center', fig.height=9, fig.width=9, dpi=200, out.width='75%'}
+par(mfrow=c(2,2), mar = c(4,4,2,2), oma = c(2,1,1,1), mgp = c(2,1,0))
 
 my_colors <- c("#8D9093", "#C199CE", "#DA0EA1", "#5026D9", "#90E7F8", "#1971A9")
 
@@ -64,7 +64,7 @@ plotReadStats(read.counts = read.counts,
 
 plotLegend(conditions = my_conditions,
            legend_colors = my_colors, 
-           legend_size = 0.8)
+           legend_size = 1.0)
 
 # Note multi-mappers are zero here, because they were excluded by the STAR aligner settings
 ```
