@@ -1,0 +1,127 @@
+---
+title: "Explore Read Counts"
+author: "Tamas Schauer"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  \usepackage[utf8]{inputenc}
+---
+
+<style>
+pre {
+  overflow-x: auto;
+}
+pre code {
+  word-wrap: normal;
+  white-space: pre;
+}
+</style>
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+
+
+## Load Example Results
+
+```{r message=FALSE, warning=FALSE,results=T}
+library(HelpersforDESeq2)
+library(DESeq2)
+
+data_dir <- system.file("extdata/", package = "HelpersforDESeq2")
+
+
+load(file.path(data_dir, "read.counts.rda"))
+kable(read.counts[1:10,1:6])
+
+
+load(file.path(data_dir, "dds.rda"))
+dds
+
+
+my_conditions <- colData(dds)$Sample
+my_conditions
+
+my_conditions <- factor(my_conditions, levels = unique(my_conditions)[c(1,3,2,5,6,4)])
+colData(dds)$Sample <- my_conditions
+
+my_conditions
+```
+
+## Read Stats
+
+```{r message=FALSE, warning=FALSE,results=F, fig.align='center', fig.height=7, fig.width=7, dpi=200, out.width='75%'}
+par(mfrow=c(2,2), mar = c(4,4,2,2), oma = c(1,1,1,1), mgp = c(2,1,0))
+
+my_colors <- c("#8D9093", "#C199CE", "#DA0EA1", "#5026D9", "#90E7F8", "#1971A9")
+
+plotReadStats(read.counts = read.counts,
+              conditions = my_conditions, 
+              bar_colors = my_colors)
+
+plotLegend(conditions = my_conditions,
+           legend_colors = my_colors, 
+           legend_size = 0.8)
+
+# Note multi-mappers are zero here, because they were excluded by the STAR aligner settings
+```
+
+
+## Batch correction
+
+```{r message=FALSE, warning=FALSE,results=FALSE}
+library(sva)
+
+log2_counts_uncor <- log2(counts(dds, normalized = TRUE)+1)
+
+batchVar <- colData(dds)$Batch
+modcombat <- model.matrix(~Sample, data = colData(dds))
+
+log2_counts_bcor <- ComBat(dat = log2_counts_uncor, 
+                           batch = batchVar, 
+                           mod = modcombat, 
+                           par.prior = TRUE, prior.plots = FALSE)
+
+```
+
+## PCA
+
+```{r message=FALSE, warning=FALSE,results=F, fig.align='center', fig.height=3.75, fig.width=7, dpi=200, out.width='75%'}
+par(mfrow=c(1,2), mar = c(4,4,2,2), oma = c(1,1,1,1), mgp = c(2,1,0))
+
+
+plottingPCA(log2_counts_uncor,
+            xcomp = 1,
+            ycomp = 2,
+            conditions = my_conditions,
+            pca_colors = my_colors,
+            main_title = "Before Batch Correction",
+            quantiles = c(0,1),
+            show_labels = FALSE,
+            point_size = 1.1,
+            my_xlimits = c(-100,100),
+            my_ylimits = c(-100,100))
+
+
+plottingPCA(log2_counts_bcor,
+            xcomp = 1,
+            ycomp = 2,
+            conditions = my_conditions,
+            pca_colors = my_colors,
+            main_title = "After Batch Correction",
+            quantiles = c(0,1),
+            show_labels = FALSE,
+            point_size = 1.1,
+            my_xlimits = c(-100,100),
+            my_ylimits = c(-100,100))
+
+plotLegend(conditions = my_conditions,
+           legend_colors = my_colors, 
+           legend_size = 0.7)
+
+```
+
+## Soon ...
