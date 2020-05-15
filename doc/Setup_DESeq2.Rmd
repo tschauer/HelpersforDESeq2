@@ -127,8 +127,8 @@ for(contrast_name in contrast_list){
 head(res)
 ```
 
-```{r message=FALSE, warning=FALSE,results=F, fig.align='center', fig.height=7, fig.width=7, dpi=200, out.width='75%'}
-par(mfrow=c(1,1), mar = c(4,4,2,2), oma = c(2,2,2,2), mgp = c(2,1,0))
+```{r message=FALSE, warning=FALSE,results=F, fig.align='center', fig.height=6, fig.width=6, dpi=200, out.width='75%'}
+par(mfrow=c(1,1), mar = c(4,4,2,2), oma = c(4,4,4,4), mgp = c(2,1,0))
 
 plottingMA(res = res,
            main_title = gsub("res.","",res_name),
@@ -147,7 +147,7 @@ plottingMA(res = res,
 ```
 
 
-## Interaction Terms
+## Interaction Term
 
 ```{r message=F, warning=FALSE,results=TRUE}
 SampleTable2 <- SampleTable[grep("ATP",SampleTable$Condition),]
@@ -186,8 +186,8 @@ head(resI)
 
 
 
-```{r message=FALSE, warning=FALSE,results=F, fig.align='center', fig.height=7, fig.width=7, dpi=200, out.width='75%'}
-par(mfrow=c(1,1), mar = c(5,5,1,1), oma = c(3,3,3,3), mgp = c(3,1,0))
+```{r message=FALSE, warning=FALSE,results=F, fig.align='center', fig.height=6, fig.width=6, dpi=200, out.width='75%'}
+par(mfrow=c(1,1), mar = c(5,5,1,1), oma = c(4,4,4,4), mgp = c(3,1,0))
 
 res1_name = "res.HighMLEpATP-HighMLEmATP"
 res2_name = "res.LowMLEpATP-LowMLEmATP"
@@ -201,11 +201,10 @@ plotLog2FC(res1 = get(res1_name),
            point_size = 0.33,
            selection_ids = resI$gene_symbol[resI$padj < 0.1 & abs(resI$log2FoldChange) > 2],
            selection_id_type = "gene_symbol",
-           selection_color = rgb(0.9,0.6,0.2,1),
            selection_point_size = 1,
            selection_legend = NULL,
            selection_text_label = TRUE,
-           selection_text_size = 0.8) 
+           selection_text_size = 0.6) 
 ```
 
 

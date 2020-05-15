@@ -74,7 +74,7 @@ for(res_name in res_names[c(2,3,1,4)]){
                    selection_id_type = "gene_symbol",
                    selection_point_size = 0.75,
                    selection_text_label = TRUE,
-                   selection_shadow = grepl("mATP", res_name),
+                   selection_shadow = FALSE,
                    xlims = c(0, 6),
                    ylims = c(-10,10),
                    x_axis_by = 2,
@@ -85,6 +85,29 @@ for(res_name in res_names[c(2,3,1,4)]){
 ```
         
 
+```{r message=FALSE, warning=FALSE,results=T, fig.align='center', fig.height=6, fig.width=6, dpi=200, out.width='75%'}
+par(mfrow=c(1,1), mar = c(4,4,2,2), oma = c(4,4,4,4), mgp = c(2,1,0))
+
+res_name <- "res.HighMLEpATP-HighMLEmATP"
+
+# alternative colors
+plottingMA(res =  get(res_name),
+           main_title = gsub("res.","",res_name),
+           point_color = rgb(0,0,0,0.2), 
+           sign_point_color = rgb(0.8,0,0,0.5),
+           selection_point_color = rgb(0.7,0.7,0.7),
+           selection_sign_point_color = rgb(0.9,0.6,0), 
+           selection_ids = c("roX1","roX2"),
+           selection_id_type = "gene_symbol",
+           selection_point_size = 1,
+           selection_text_label = TRUE,
+           selection_shadow = TRUE,
+           xlims = c(0, 6),
+           ylims = c(-10,10),
+           x_axis_by = 2,
+           padj_cutoff = 0.01,
+           show_legend = TRUE)
+```
 
 ## Density Plot of log2FC
 
@@ -138,7 +161,6 @@ plotLog2FC(res1 = get(res1_name),
            point_size = 0.25,
            selection_ids = c("roX1","roX2"),
            selection_id_type = "gene_symbol",
-           selection_color = rgb(0.9,0.6,0.2,1),
            selection_point_size = 1,
            selection_legend = NULL,
            selection_text_label = TRUE) 
