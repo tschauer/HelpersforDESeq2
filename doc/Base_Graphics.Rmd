@@ -308,14 +308,14 @@ plotLog2FC(res1 = get(res_names[1]),
 
 ### Check function Code
 
-
+Link: https://github.com/tschauer/HelpersforDESeq2/tree/master/R
 
 ```{r}
-# source code in /R directory
 plottingMA
 
 plotLog2FC
 ```
+
 
 
 
