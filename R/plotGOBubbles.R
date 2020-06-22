@@ -14,7 +14,7 @@ plotGObBubbles <- function(gt,
         par(fig = c(0,0.67,0.15,0.85), mar=c(4,20,3,0), mgp = c(2.00,1.00,0))
 
         plot(y = 1:nrow(gt), ylab = "", yaxt="n",
-             x = gt$`Sign/Exp`, xlab = "Sign/Exp",
+             x = gt$`Sign/Exp`, xlab = "Fold Enrichment",
              cex = log(gt$Significant), pch = 19, lwd=0,
              col = rgb(0,0,0.5, alpha = (-log10(as.numeric(gt$Fisher.classic)))/(max(-log10(as.numeric(gt$Fisher.classic))))))
 
