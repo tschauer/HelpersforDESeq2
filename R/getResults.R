@@ -25,7 +25,7 @@ getResults <- function(dds,
                                independentFiltering = FALSE)
 
                 if(shrink){
-                        res <- lfcShrink(dds, contrast = contrast, type="normal", res = res)
+                        res <- lfcShrink(dds, contrast = c("Sample", contrast), type="normal", res = res)
                 }
 
         } else {
