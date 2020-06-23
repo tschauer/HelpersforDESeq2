@@ -26,7 +26,7 @@ plotGObBubbles <- function(gt,
 
         plot(0:1,0:1, xlab="",ylab="", type="n", xaxt="n",yaxt="n",bty="n")
 
-        dot_size_quantiles <- quantile( round(gt$Significant/5)*5, prob = c(0,0.5,1))
+        dot_size_quantiles <- round(quantile( round(gt$Significant/10)*10, prob = c(0,0.5,1)))
 
         legend(0,1, legend = dot_size_quantiles, title = expression(bold("Sign. Gene Count")),
                pch = 19, pt.cex =  log(dot_size_quantiles),  bty = "n",

@@ -25,20 +25,20 @@ makeGOTable <- function(all_genes,
         resultTopGO <- topGO::runTest(tgd, algorithm = "classic", statistic = "Fisher")
 
 
-        bp <- topGO::GenTable( tgd,
+        df <- topGO::GenTable( tgd,
                                Fisher.classic = resultTopGO,
                                orderBy = "Fisher.classic" , topNodes = 100)
 
 
-        bp <- bp[bp$Significant >= min_signficant,]
-        bp <- head(bp, shown_terms)
-        bp$`Sign/Exp` <- bp$Significant / bp$Expected
+        df <- df[df$Significant >= min_signficant,]
+        df <- head(df, shown_terms)
+        df$`Sign/Exp` <- df$Significant / df$Expected
 
-        gene_list <- topGO::genesInTerm(object = tgd, whichGO = bp$GO.ID)
+        gene_list <- topGO::genesInTerm(object = tgd, whichGO = df$GO.ID)
         gene_names <- unlist(lapply(gene_list, FUN = function(x){paste(x[x %in% (names(all_genes)[all_genes == 1])], collapse = "/")}))
 
 
-        df <- merge(bp, data.frame(gene_names), by.x="GO.ID", by.y = "row.names")
+        df <- merge(df, data.frame(gene_names), by.x="GO.ID", by.y = "row.names")
 
         rownames(df) <- df$GO.ID
         df <- df[,-1]

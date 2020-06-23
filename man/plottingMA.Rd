@@ -11,6 +11,7 @@ plottingMA(
   point_color = rgb(0.7, 0.7, 0.7, 0.5),
   sign_point_color = rgb(0.9, 0.6, 0, 0.5),
   selection_ids = NULL,
+  selection_name = "labeled",
   selection_id_type = "symbol",
   selection_point_size = 0.5,
   selection_point_color = rgb(0, 0, 0, 1),
