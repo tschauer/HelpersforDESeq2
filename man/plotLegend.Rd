@@ -4,7 +4,7 @@
 \alias{plotLegend}
 \title{plotLegend}
 \usage{
-plotLegend(conditions, legend_colors, legend_size = 0.8)
+plotLegend(conditions, legend_colors, legend_size = 0.8, horizontal = T)
 }
 \description{
 Add legend to the bottom of an existing plot

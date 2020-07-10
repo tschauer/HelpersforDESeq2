@@ -7,6 +7,7 @@
 
 plottingMA <- function(res,
                        main_title = "",
+                       main_title_size = 1,
                        point_size = 0.25,
                        point_color =      rgb(0.7,0.7,0.7,0.5),
                        sign_point_color = rgb(0.9,0.6,0.0,0.5),
@@ -45,7 +46,7 @@ plottingMA <- function(res,
                y = res.sign$log2FoldChange,
                col = sign_point_color, pch = 19, cex = point_size)
 
-        mtext(text = main_title, side = 3, line = 0.5, adj = 0.5, font = 2)
+        mtext(text = main_title, side = 3, line = 0.5, adj = 0.5, font = 2, cex = main_title_size)
 
 
         if(!(is.null(selection_ids))){
