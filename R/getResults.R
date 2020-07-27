@@ -47,7 +47,7 @@ getResults <- function(dds,
         res$padj[is.na(res$padj)] <- 1
         res$log2FoldChange[is.na(res$log2FoldChange)] <- 0
 
-        res <- res[order(res$padj),]
+        res <- res[order(res$pvalue),]
 
         return(res)
 
