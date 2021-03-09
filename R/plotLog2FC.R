@@ -68,7 +68,7 @@ plotLog2FC <- function(res1,
                 }
         }
 
-        if(!(is.null(selection_legend))){
+        if(!(is.null(selection_legend)) & sum(selection_vector) > 0){
                 legend("topleft",
                        legend = c(selection_legend),
                        bg = "white",
