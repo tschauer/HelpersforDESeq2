@@ -21,7 +21,10 @@ plotLog2FC <- function(res1,
                        selection_point_size = 0.5,
                        selection_legend = NULL,
                        selection_text_label = FALSE,
-                       selection_text_size = 1.1){
+                       selection_text_size = 1.1,
+                       add_lowess_line = F,
+                       lowess_line_color = rgb(0.7,0,0.9,1),
+                       lowess_line_width = 1.5){
 
 
         res_merged <- merge(res1, res2, by = "row.names")
@@ -35,6 +38,11 @@ plotLog2FC <- function(res1,
              xlim = lims,
              col = point_color,
              pch = 19, cex = point_size)
+
+        if(add_lowess_line){
+                lines(lowess(x = res_merged$log2FoldChange.x, y = res_merged$log2FoldChange.y),
+                      col = lowess_line_color, lwd = lowess_line_width)
+        }
 
         abline(h=0, v=0, col="grey32")
         abline(coef = c(0,1), col="grey32", lty=2)

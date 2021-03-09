@@ -19,7 +19,10 @@ plotLog2FC(
   selection_point_size = 0.5,
   selection_legend = NULL,
   selection_text_label = FALSE,
-  selection_text_size = 1.1
+  selection_text_size = 1.1,
+  add_lowess_line = F,
+  lowess_line_color = rgb(0.7, 0, 0.9, 1),
+  lowess_line_width = 1.5
 )
 }
 \description{

@@ -90,12 +90,15 @@ plottingMA <- function(res,
 
         if(show_legend){
 
+                if(!(is.null(selection_ids)) & sum(selection_vector) > 0){
+
                 legend("topright",
                        legend =  paste(selection_name,c("significant", "non-significant")),
                        col = c(selection_sign_point_color,
                                selection_point_color),
                        bg = "white", border = NA, bty = "n",
                        cex = 0.8, pch = 19)
+                }
 
                 legend("bottomright",
                        legend =  c("all significant",
