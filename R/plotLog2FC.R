@@ -66,6 +66,8 @@ plotLog2FC <- function(res1,
                              adj = c(0,-0.5),
                              col = selection_color, cex = selection_text_size)
                 }
+        } else {
+                selection_vector <- FALSE
         }
 
         if(!(is.null(selection_legend)) & sum(selection_vector) > 0){
