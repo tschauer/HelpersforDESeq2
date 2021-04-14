@@ -20,9 +20,11 @@ plotLog2FC(
   selection_legend = NULL,
   selection_text_label = FALSE,
   selection_text_size = 1.1,
+  selection_text_adj = -0.5,
   add_lowess_line = F,
   lowess_line_color = rgb(0.7, 0, 0.9, 1),
-  lowess_line_width = 1.5
+  lowess_line_width = 1.5,
+  legend_pos = "topleft"
 )
 }
 \description{

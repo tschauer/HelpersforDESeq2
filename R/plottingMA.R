@@ -19,12 +19,15 @@ plottingMA <- function(res,
                        selection_sign_point_color = rgb(0.8,0,0,1),
                        selection_text_label = FALSE,
                        selection_text_size = 1,
+                       selection_text_adj = -0.5,
                        selection_shadow = FALSE,
                        xlims = c(0, 6),
                        ylims = c(-5,5),
                        x_axis_by = 2,
                        padj_cutoff = 0.01,
-                       show_legend = TRUE){
+                       show_legend = TRUE,
+                       legend_pos_label = "topright",
+                       legend_pos_all = "bottomright"){
 
         res$log10baseMean <- log10(res$baseMean+1)
 
@@ -73,7 +76,7 @@ plottingMA <- function(res,
                                 text(x = res$log10baseMean[selection_vector],
                                      y = res$log2FoldChange[selection_vector],
                                      labels = res[selection_id_type][,1][selection_vector],
-                                     col = "black", adj = c(0, -0.5), font = 2,
+                                     col = "black", adj = c(0, selection_text_adj), font = 2,
                                      cex = selection_text_size)
                         }
 
@@ -81,7 +84,7 @@ plottingMA <- function(res,
                              y = res$log2FoldChange[selection_vector],
                              labels = res[selection_id_type][,1][selection_vector],
                              col = selection_color[selection_vector],
-                             adj = c(0, -0.5),
+                             adj = c(0, selection_text_adj),
                              cex = selection_text_size)
                 }
 
@@ -92,7 +95,7 @@ plottingMA <- function(res,
 
                 if(!(is.null(selection_ids)) & sum(selection_vector) > 0){
 
-                legend("topright",
+                legend(legend_pos_label,
                        legend =  paste(selection_name,c("significant", "non-significant")),
                        col = c(selection_sign_point_color,
                                selection_point_color),
@@ -100,7 +103,7 @@ plottingMA <- function(res,
                        cex = 0.8, pch = 19)
                 }
 
-                legend("bottomright",
+                legend(legend_pos_all,
                        legend =  c("all significant",
                                    "all non-significant"),
                        col = c(sign_point_color,

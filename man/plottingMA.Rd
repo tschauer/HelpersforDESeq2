@@ -19,12 +19,15 @@ plottingMA(
   selection_sign_point_color = rgb(0.8, 0, 0, 1),
   selection_text_label = FALSE,
   selection_text_size = 1,
+  selection_text_adj = -0.5,
   selection_shadow = FALSE,
   xlims = c(0, 6),
   ylims = c(-5, 5),
   x_axis_by = 2,
   padj_cutoff = 0.01,
-  show_legend = TRUE
+  show_legend = TRUE,
+  legend_pos_label = "topright",
+  legend_pos_all = "bottomright"
 )
 }
 \description{

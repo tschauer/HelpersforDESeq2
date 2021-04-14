@@ -22,9 +22,11 @@ plotLog2FC <- function(res1,
                        selection_legend = NULL,
                        selection_text_label = FALSE,
                        selection_text_size = 1.1,
+                       selection_text_adj = -0.5,
                        add_lowess_line = F,
                        lowess_line_color = rgb(0.7,0,0.9,1),
-                       lowess_line_width = 1.5){
+                       lowess_line_width = 1.5,
+                       legend_pos = "topleft"){
 
 
         res_merged <- merge(res1, res2, by = "row.names")
@@ -63,7 +65,7 @@ plotLog2FC <- function(res1,
                         text(x = res_merged$log2FoldChange.x[selection_vector],
                              y = res_merged$log2FoldChange.y[selection_vector],
                              labels = res_merged[selection_id_type][,1][selection_vector],
-                             adj = c(0,-0.5),
+                             adj = c(0, selection_text_adj),
                              col = selection_color, cex = selection_text_size)
                 }
         } else {
@@ -71,7 +73,7 @@ plotLog2FC <- function(res1,
         }
 
         if(!(is.null(selection_legend)) & sum(selection_vector) > 0){
-                legend("topleft",
+                legend(legend_pos,
                        legend = c(selection_legend),
                        bg = "white",
                        col = c(selection_color), pch = 19, cex = 1)
