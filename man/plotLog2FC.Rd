@@ -28,5 +28,5 @@ plotLog2FC(
 )
 }
 \description{
-compare log2FC values from two results table
+compare log2FC values from two DESeq2 results table
 }

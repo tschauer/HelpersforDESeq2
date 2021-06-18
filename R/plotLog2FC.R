@@ -1,6 +1,6 @@
 #' plotLog2FC
 #'
-#' compare log2FC values from two results table
+#' compare log2FC values from two DESeq2 results table
 #' @export
 
 
