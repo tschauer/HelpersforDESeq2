@@ -29,7 +29,9 @@ plotLog2FC <- function(res1,
                        legend_pos = "topleft"){
 
 
-        res_merged <- merge(res1, res2, by = "row.names")
+        res_merged <- merge(x = as.data.frame(res1),
+                            y = as.data.frame(res2),
+                            by = "row.names")
 
         plot(x = res_merged$log2FoldChange.x,
              y = res_merged$log2FoldChange.y,
