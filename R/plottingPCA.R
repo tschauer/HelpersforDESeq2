@@ -20,6 +20,8 @@ plottingPCA <- function(my_data,
                         my_xlimits = c(-100,100),
                         my_ylimits = c(-100,100)){
 
+        ##########################################
+
         my_data <- na.omit(my_data)
 
         rv <- rowVars(my_data)
